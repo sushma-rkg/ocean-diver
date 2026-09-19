@@ -29,7 +29,10 @@ const diver = {
   y: canvas.height / 2,
   follow: 0.06, // how quickly the diver catches up: lower = lazier, higher = snappier
   facing: 1,    // 1 = facing right, -1 = facing left
-  scale: 1,     // size multiplier, changes with depth (set every frame in update)
+  angle: 0,       // current rotation in radians: 0 = horizontal, head up or down when swimming vertically
+  targetAngle: 0, // the rotation the diver is easing toward
+  turnSpeed: 0.1, // how quickly he rotates: lower = slower, smoother
+  scale: 1,    // size multiplier, changes with depth (set every frame in update)
   minScale: 0.7, // size at the top of the screen (shallow, looks farther away)
   maxScale: 1.3, // size at the bottom of the screen (deep, looks closer)
   width: 160,    // size the illustration is drawn at, before the depth scale
@@ -140,8 +143,24 @@ function update() {
   // Turn to face the direction of travel, but only for clearly horizontal movement.
   // Otherwise keep the current facing (vertical movement, or tiny steps while settling).
   if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 0.5) {
-    diver.facing = dx > 0 ? 1 : -1;
+    const newFacing = dx > 0 ? 1 : -1;
+    if (newFacing !== diver.facing) {
+      diver.facing = newFacing;
+      diver.angle = -diver.angle; // keeps the flip a plain mirror image, with no jump in rotation
+    }
   }
+
+  // Rotate to swim head-first up or down. Mostly vertical movement points his head
+  // up (moving up) or down (moving down); mostly sideways movement returns to horizontal.
+  // Tiny steps while settling change nothing, so he keeps his current orientation.
+  if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 0.5) {
+    diver.targetAngle = (dy < 0 ? -1 : 1) * diver.facing * (Math.PI / 2);
+  } else if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 0.5) {
+    diver.targetAngle = 0;
+  }
+
+  // Ease toward the target angle so the turn is smooth
+  diver.angle += (diver.targetAngle - diver.angle) * diver.turnSpeed;
 
   // Depth: 0 at the top of the screen, 1 at the bottom. The diver's own y is used
   // (not the cursor's) because it already moves smoothly, so the size does too.
@@ -150,8 +169,11 @@ function update() {
 
   // The bubbles come out of the regulator at his mouth, so the spawn point switches sides
   // when he turns and moves closer to or farther from his center as he changes size
-  const bubbleX = diver.x + diver.mouthOffsetX * diver.facing * diver.scale;
-  const bubbleY = diver.y + diver.mouthOffsetY * diver.scale;
+  // The offset is also rotated by the diver's angle, so it stays on his mouth when he swims vertically
+  const mouthX = diver.mouthOffsetX * diver.facing * diver.scale;
+  const mouthY = diver.mouthOffsetY * diver.scale;
+  const bubbleX = diver.x + mouthX * Math.cos(diver.angle) - mouthY * Math.sin(diver.angle);
+  const bubbleY = diver.y + mouthX * Math.sin(diver.angle) + mouthY * Math.cos(diver.angle);
 
   // Spawn a bubble on about 1 in 3 frames
   if (Math.random() < 0.35) {
@@ -269,10 +291,11 @@ function drawDiver() {
   // Wait until the image file has finished loading
   if (!diverImage.complete || diverImage.naturalWidth === 0) return;
 
-  // Move the origin to the diver, mirror horizontally when facing left,
-  // and resize for depth. The image is drawn relative to the diver's center.
+  // Move the origin to the diver, rotate for vertical swimming, mirror horizontally
+  // when facing left, and resize for depth. The image is drawn relative to the diver's center.
   ctx.save();
   ctx.translate(diver.x, diver.y);
+  ctx.rotate(diver.angle);
   ctx.scale(diver.facing * diver.scale, diver.scale);
   ctx.drawImage(diverImage, -diver.width / 2, -diver.height / 2, diver.width, diver.height);
   ctx.restore();
