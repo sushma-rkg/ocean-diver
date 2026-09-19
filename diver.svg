@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="120" viewBox="0 0 240 120">
+  <defs>
+    <!-- Wetsuit: lighter on top (facing the surface light), darker underneath -->
+    <linearGradient id="suit" gradientUnits="userSpaceOnUse" x1="0" y1="30" x2="0" y2="90">
+      <stop offset="0" stop-color="#3f566b"/>
+      <stop offset="0.5" stop-color="#22374a"/>
+      <stop offset="1" stop-color="#101c27"/>
+    </linearGradient>
+    <!-- Buoyancy vest -->
+    <linearGradient id="vest" gradientUnits="userSpaceOnUse" x1="0" y1="42" x2="0" y2="78">
+      <stop offset="0" stop-color="#ffb74d"/>
+      <stop offset="0.55" stop-color="#f57c00"/>
+      <stop offset="1" stop-color="#b34700"/>
+    </linearGradient>
+    <!-- Steel tank -->
+    <linearGradient id="tank" gradientUnits="userSpaceOnUse" x1="0" y1="26" x2="0" y2="46">
+      <stop offset="0" stop-color="#f4f7f8"/>
+      <stop offset="0.35" stop-color="#c2ccd1"/>
+      <stop offset="1" stop-color="#55666f"/>
+    </linearGradient>
+    <!-- Brass valve -->
+    <linearGradient id="brass" gradientUnits="userSpaceOnUse" x1="0" y1="16" x2="0" y2="28">
+      <stop offset="0" stop-color="#ffe082"/>
+      <stop offset="1" stop-color="#b8860b"/>
+    </linearGradient>
+    <!-- Mask glass -->
+    <linearGradient id="glass" gradientUnits="userSpaceOnUse" x1="203" y1="47" x2="220" y2="59">
+      <stop offset="0" stop-color="#b3ecf7"/>
+      <stop offset="1" stop-color="#0288d1"/>
+    </linearGradient>
+    <!-- Fin blades -->
+    <linearGradient id="fin" gradientUnits="userSpaceOnUse" x1="10" y1="0" x2="60" y2="0">
+      <stop offset="0" stop-color="#ffd54f"/>
+      <stop offset="0.35" stop-color="#37474f"/>
+      <stop offset="1" stop-color="#22303a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ===== Far side (behind the body, darker) ===== -->
+  <!-- Far leg -->
+  <path d="M112 66 L84 76" stroke="#0f1a24" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <path d="M84 76 L56 86" stroke="#0f1a24" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <!-- Far fin -->
+  <path d="M58 82 L16 92 Q6 100 18 105 L60 92 Z" fill="#17232c" stroke="#c9a227" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M46 88 L24 96 M38 90 L22 99" stroke="#c9a227" stroke-width="1" opacity="0.7"/>
+  <!-- Far arm -->
+  <path d="M172 64 L194 78" stroke="#0f1a24" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <circle cx="198" cy="80" r="5.5" fill="#0b141b"/>
+
+  <!-- ===== Torso ===== -->
+  <path d="M106 50 C120 44 150 40 176 42 C184 46 184 62 178 70 C170 78 150 80 130 78 C118 76 108 72 106 66 Z" fill="url(#suit)"/>
+  <!-- Highlight along the back -->
+  <path d="M112 47 C130 43 155 41 174 43" stroke="#ffffff" stroke-opacity="0.22" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+  <!-- Buoyancy vest wrapped around the torso -->
+  <path d="M120 48 C138 43 158 42 172 45 L174 70 C158 78 138 78 122 72 Z" fill="url(#vest)"/>
+  <path d="M124 58 C140 63 156 63 170 58" stroke="#8a3a00" stroke-width="1.2" fill="none" opacity="0.7"/>
+  <!-- Harness straps over the shoulder and across the chest -->
+  <path d="M164 44 L176 62" stroke="#0b141b" stroke-width="4" stroke-linecap="round"/>
+  <path d="M150 45 L156 76" stroke="#0b141b" stroke-width="3.5" stroke-linecap="round"/>
+  <rect x="152" y="58" width="5" height="6" rx="1" fill="#90a4ae"/>
+  <!-- Waist strap and buckle -->
+  <path d="M122 50 L124 74" stroke="#0b141b" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- ===== Oxygen tank on the back ===== -->
+  <rect x="92" y="26" width="72" height="20" rx="10" fill="url(#tank)" stroke="#4a5a63" stroke-width="1.2"/>
+  <rect x="110" y="26" width="4" height="20" fill="#37474f"/>
+  <rect x="112" y="26" width="1.2" height="20" fill="#cfd8dc" opacity="0.6"/>
+  <rect x="138" y="26" width="4" height="20" fill="#37474f"/>
+  <rect x="140" y="26" width="1.2" height="20" fill="#cfd8dc" opacity="0.6"/>
+  <path d="M98 29 H154" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- Valve and first stage -->
+  <rect x="149" y="17" width="10" height="11" rx="2.5" fill="url(#brass)" stroke="#8a6508" stroke-width="1"/>
+  <circle cx="154" cy="15.5" r="3.6" fill="#37474f" stroke="#1c262b" stroke-width="1"/>
+
+  <!-- ===== Near leg (in front) ===== -->
+  <path d="M114 58 L86 66" stroke="#26404f" stroke-width="15" stroke-linecap="round" fill="none"/>
+  <path d="M86 66 L56 57" stroke="#26404f" stroke-width="11" stroke-linecap="round" fill="none"/>
+  <path d="M112 53 L88 60" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/>
+  <path d="M84 61 L58 53" stroke="#26c6da" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- Near fin -->
+  <path d="M58 52 L16 39 Q5 50 14 61 L58 63 Z" fill="url(#fin)" stroke="#ffca28" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M46 52 L20 46 M46 56 L18 54 M46 60 L20 60" stroke="#ffca28" stroke-width="1" opacity="0.65"/>
+
+  <!-- ===== Hoses ===== -->
+  <!-- Primary regulator hose: first stage, over the shoulder, to the mouth -->
+  <path d="M158 19 C176 5 196 30 205 63" stroke="#1c262b" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  <path d="M158 18 C176 4 196 29 205 62" stroke="#78909c" stroke-width="0.9" fill="none" stroke-linecap="round" opacity="0.8"/>
+  <!-- Backup regulator (yellow) clipped on the chest -->
+  <path d="M152 19 C149 34 157 48 168 62" stroke="#ffca28" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <circle cx="168" cy="63" r="2.6" fill="#37474f"/>
+  <!-- Pressure gauge hose down to the wrist gauge -->
+  <path d="M160 24 C180 34 186 54 194 72" stroke="#455a64" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- ===== Near arm reaching forward ===== -->
+  <path d="M170 58 L190 71" stroke="#26404f" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <path d="M190 71 L216 67" stroke="#26404f" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <path d="M172 54 L188 65" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/>
+  <path d="M194 70 L212 67" stroke="#26c6da" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Wrist gauge and glove -->
+  <circle cx="196" cy="71" r="4.6" fill="#263238" stroke="#b0bec5" stroke-width="1.2"/>
+  <circle cx="196" cy="71" r="2.2" fill="#e0f7fa"/>
+  <path d="M212 62 Q226 62 226 68 Q226 74 214 72 Z" fill="#101c27"/>
+  <path d="M218 64 L225 65 M218 67 L226 68 M218 70 L225 71" stroke="#3f566b" stroke-width="0.8"/>
+
+  <!-- ===== Head ===== -->
+  <path d="M180 48 C182 42 192 40 200 42 C212 44 218 52 217 62 C216 70 206 72 198 70 C188 68 180 60 180 48 Z" fill="#132230"/>
+  <ellipse cx="211" cy="59" rx="8.5" ry="8" fill="#e8b98a"/>
+  <ellipse cx="213" cy="62" rx="5" ry="4" fill="#d19a6d" opacity="0.6"/>
+  <!-- Mask strap wrapping round the hood -->
+  <path d="M203 49 C196 49 192 55 194 62" stroke="#0b141b" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <!-- Mask frame and glass -->
+  <rect x="203" y="46" width="18" height="13" rx="5.5" fill="#0b141b"/>
+  <rect x="205" y="48" width="14" height="9" rx="4" fill="url(#glass)" fill-opacity="0.92"/>
+  <path d="M207 50 L212 50" stroke="#ffffff" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M214 56.5 L217 55" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1"/>
+  <!-- Regulator mouthpiece -->
+  <ellipse cx="212" cy="65" rx="4.6" ry="3.2" fill="#37474f" stroke="#1c262b" stroke-width="1"/>
+  <path d="M208 64 Q206 64 205 63" stroke="#1c262b" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>

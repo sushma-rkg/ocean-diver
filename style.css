@@ -1,0 +1,18 @@
+/* Remove default page spacing and hide scrollbars */
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* The ocean: light blue at the top fading to deep blue at the bottom */
+body {
+  background: linear-gradient(to bottom, #4fc3f7, #0277bd 50%, #01243f);
+}
+
+/* The canvas covers the whole window; it is transparent so the gradient shows through */
+#ocean {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
