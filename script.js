@@ -14,10 +14,14 @@ window.addEventListener("resize", resizeCanvas);
 // Start in the middle of the screen until the mouse moves
 const mouse = { x: canvas.width / 2, y: canvas.height / 2 };
 
-window.addEventListener("mousemove", (event) => {
+// Pointer events cover mouse, finger, and pen with the same code.
+// pointerdown also lets a single tap send the diver to that spot.
+function updateTarget(event) {
   mouse.x = event.clientX;
   mouse.y = event.clientY;
-});
+}
+window.addEventListener("pointermove", updateTarget);
+window.addEventListener("pointerdown", updateTarget);
 
 // ---------- Diver ----------
 const diver = {
