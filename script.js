@@ -129,10 +129,48 @@ function updateOctopuses() {
   }
 }
 
+// ---------- Seaweed ----------
+const seaweed = [];
+const SEAWEED_COUNT = Math.max(16, Math.round(canvas.width / 40)); // about one blade per 40 pixels
+const SEAWEED_COLORS = ["#2f9e57", "#3fae5f", "#56b870", "#2b9a80", "#6cc070"]; // bright enough to show against the dark bottom
+
+// Position and height are fractions of the screen, so the seaweed stays on the bottom
+// edge and keeps its proportions when the window is resized.
+function makeSeaweed(xFrac) {
+  return {
+    xFrac: xFrac,                                // position across the screen (0 to 1)
+    heightFrac: 0.07 + Math.random() * 0.17,     // height as a fraction of the screen height
+    width: 5 + Math.random() * 7,                // thickness at the base, in pixels
+    lean: (Math.random() - 0.5) * 0.35,          // permanent bend to one side, as a fraction of height
+    ripple: Math.random() * 0.04,                // small S-shaped wave in the blade
+    ripplePhase: Math.random() * Math.PI * 2,
+    swayAmount: 0.06 + Math.random() * 0.06,     // how far the tip sways, as a fraction of height
+    swaySpeed: 0.012 + Math.random() * 0.012,    // slow: one sway takes about 4 to 9 seconds
+    time: Math.random() * 1000,                  // own frame counter, so blades are out of step
+    color: SEAWEED_COLORS[Math.floor(Math.random() * SEAWEED_COLORS.length)],
+  };
+}
+
+// Give each blade its own equal slot across the screen, nudged randomly inside the slot,
+// so the seaweed is spread across the whole width with no empty stretches
+for (let i = 0; i < SEAWEED_COUNT; i++) {
+  seaweed.push(makeSeaweed((i + 0.5 + (Math.random() - 0.5) * 0.8) / SEAWEED_COUNT));
+}
+
+// Draw the tall blades first, so the shorter ones sit in front of them
+seaweed.sort((a, b) => b.heightFrac - a.heightFrac);
+
+function updateSeaweed() {
+  for (const s of seaweed) {
+    s.time += 1;
+  }
+}
+
 // ---------- Update: change numbers a little each frame ----------
 function update() {
   updateFish();
   updateOctopuses();
+  updateSeaweed();
 
   // Move the diver a fraction of the way toward the cursor
   const dx = (mouse.x - diver.x) * diver.follow;
@@ -301,9 +339,45 @@ function drawDiver() {
   ctx.restore();
 }
 
+// Each blade is a tapered ribbon made of short segments. The bend and sway grow toward
+// the tip (t * t), so the base stays fixed on the bottom edge while the top moves.
+function drawSeaweed() {
+  const steps = 12;
+
+  for (const s of seaweed) {
+    const baseX = canvas.width * s.xFrac;
+    const baseY = canvas.height + 2; // just below the edge, so the base is never visible
+    const h = canvas.height * s.heightFrac;
+
+    const left = [];
+    const right = [];
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps; // 0 at the bottom, 1 at the tip
+      const sway = Math.sin(s.time * s.swaySpeed - t * 1.5) * s.swayAmount * h;
+      const ripple = Math.sin(t * 5 + s.ripplePhase) * s.ripple * h;
+
+      const centerX = baseX + (s.lean * h + sway) * t * t + ripple * t;
+      const centerY = baseY - t * h;
+      const half = (s.width * (1 - t * 0.85)) / 2; // tapers to a point
+
+      left.push([centerX - half, centerY]);
+      right.push([centerX + half, centerY]);
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(left[0][0], left[0][1]);
+    for (let i = 1; i <= steps; i++) ctx.lineTo(left[i][0], left[i][1]);
+    for (let i = steps; i >= 0; i--) ctx.lineTo(right[i][0], right[i][1]);
+    ctx.closePath();
+    ctx.fillStyle = s.color;
+    ctx.fill();
+  }
+}
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawOctopuses(); // painted first, so they sit at the very back
+  drawSeaweed();   // painted first, so it sits behind everything
+  drawOctopuses(); // then the octopuses
   drawFish();      // then the fish, in front of the octopuses
   drawBubbles();
   drawDiver();
